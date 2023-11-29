@@ -7,7 +7,7 @@ using Project_EnterpriseSystem.Models;
 
 namespace Project_EnterpriseSystem.Services
 {
-    public class Database : DbContext
+    public class UserDatabase : DbContext
     {
         public DbSet<Artist> Artists {get; set; }
 
