@@ -38,6 +38,7 @@ namespace Project_EnterpriseSystem.Models
                 throw new Exception("Already in the playlist");
 
             ListOfSongs.Add(newSong);
+            UpdateSongCount();
         }
 
         public void DeleteSong(Song newSong){
@@ -49,6 +50,7 @@ namespace Project_EnterpriseSystem.Models
                 throw new Exception("Not in the playlist");
 
             ListOfSongs.Remove(newSong);
+            UpdateSongCount();
         }
 
         public string PlayListTitle {
@@ -63,7 +65,5 @@ namespace Project_EnterpriseSystem.Models
             Title = value;
             }  
         }
-
-        public Guid GetId{get => Id;}
     }
 }
