@@ -7,7 +7,7 @@ namespace Project_EnterpriseSystem.Models
 {
     public class Artist
     {
-        public Guid Id {get; set; }
+        public Guid Id {get;} = new Guid();
         public required string Name {get; set; }
     }
 }

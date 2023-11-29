@@ -14,7 +14,7 @@ namespace Project_EnterpriseSystem.Models
     */
     public class Playlist
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; } = new Guid();
         public required string Title { get; set; }
         public int SongCount {get; set; }
         public List<Song> ListOfSongs {get; set; }
@@ -25,8 +25,45 @@ namespace Project_EnterpriseSystem.Models
         }
 
         public void UpdateSongCount(){
-            int x = ListOfSongs.Count(); //if the list of songs is empty, then 0.
-            SongCount = x==0?0:x;
+            SongCount = ListOfSongs.Count(); //if the list of songs is empty, then 0.
+
         }
+
+        public void AddSong(Song newSong, string playlist){
+            if(newSong == default || playlist == default)
+                throw new ArgumentNullException();
+
+            
+            if(ListOfSongs.Contains(newSong))
+                throw new Exception("Already in the playlist");
+
+            ListOfSongs.Add(newSong);
+        }
+
+        public void DeleteSong(Song newSong, string playlist){
+            if(newSong == default || playlist == default)
+                throw new ArgumentNullException();
+
+            
+            if(ListOfSongs.Contains(newSong))
+                throw new Exception("Already in the playlist");
+
+            ListOfSongs.Remove(newSong);
+        }
+
+        public string PlayListTitle {
+
+            get => Title;
+
+            set{
+
+            if(value == null || value.Count() <= 0)
+                throw new ArgumentNullException();
+            
+            Title = value;
+            }  
+        }
+
+        public Guid GetId{get => Id;}
     }
 }

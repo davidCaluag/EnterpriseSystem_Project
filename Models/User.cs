@@ -14,7 +14,16 @@ namespace Project_EnterpriseSystem.Models
     */
     public class User
     {
-        public Guid Id { get; set; }
-        public List<Playlist>? PersonalPlaylist {get; set; }
+        public Guid Id { get; } = new Guid();
+        public List<Playlist> ListOfPlaylists {get; set; }
+        public string userName;
+
+        public string Username { get => userName; set{
+            if(value == default)
+                throw new ArgumentNullException();
+
+            userName = value;
+        } 
+        }    
     }
 }
