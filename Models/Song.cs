@@ -9,8 +9,8 @@ namespace Project_EnterpriseSystem.Models
     {
         public Guid Id {get; set; } = new Guid();
 
-        public  string Name {get; set; }
+        public  string Name {get; set; } = "";
 
-        public Artist Artist {get; set; }
+        public Artist Artist {get; set; } = new();
     }
 }

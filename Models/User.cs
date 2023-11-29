@@ -15,8 +15,8 @@ namespace Project_EnterpriseSystem.Models
     public class User
     {
         public Guid Id { get; set; } = new Guid();
-        public List<Playlist> ListOfPlaylists {get; set; }
-        public string userName;
+        public List<Playlist> ListOfPlaylists {get; set; } = new();
+        public string userName = "";
 
         public string Username { get => userName; set{
             if(value == default)

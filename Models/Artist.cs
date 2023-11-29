@@ -10,6 +10,6 @@ namespace Project_EnterpriseSystem.Models
     {
         [Key]
         public Guid Id {get; set; } = new Guid();
-        public string Name {get; set; }
+        public string Name {get; set; } = "";
     }
 }

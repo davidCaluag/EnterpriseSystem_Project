@@ -15,7 +15,7 @@ namespace Project_EnterpriseSystem.Models
     public class Playlist
     {
         public Guid Id { get; set; } = new Guid();
-        public string Title { get; set; }
+        public string Title { get; set; } = "";
         public int SongCount {get; set; }
         public List<Song> ListOfSongs {get; set; }
 
@@ -25,13 +25,14 @@ namespace Project_EnterpriseSystem.Models
         }
 
         public void UpdateSongCount(){
-            SongCount = ListOfSongs.Count(); //if the list of songs is empty, then 0.
+            SongCount = ListOfSongs.Count; //if the list of songs is empty, then 0.
 
         }
 
         public void AddSong(Song newSong){
+
             if(newSong == default)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Empty song");
 
             
             if(ListOfSongs.Contains(newSong))
