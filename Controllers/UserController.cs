@@ -9,6 +9,7 @@ using Project_EnterpriseSystem.Services;
 
 namespace Project_EnterpriseSystem.Controllers
 {
+    
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -22,25 +23,32 @@ namespace Project_EnterpriseSystem.Controllers
             return Ok(userList);    
         }
 
-        [HttpPut]
-        public async Task<IActionResult> AddUser(User newUser){
+        [HttpPut("/userName/{userName}/password/{password}")]
+        public async Task<IActionResult> AddUser(string userName, string password){
             
-            if(newUser == default){
+            if(userName == default || password == default){
                 throw new ArgumentNullException("Default parameters for user...");
             }
 
-            if(newUser.userName == default)
-                throw new ArgumentNullException("Username is empty (REQUIRED)");
+            User person = new(){
+                Username = userName,
+                ListOfPlaylists = new(), //I already instructed the Model to instantiate this, but I just wanna make sure it does so there are no null.
+                Id = Guid.NewGuid()
+            };
 
-            var person = await database.Users.FindAsync(newUser.Username);
+            if(person.ValidatePassword(password))
+                person.UserPasssword = password;
+            else   
+                throw new Exception("Password does not meet requirement...");
+
             if(person != default){
                 throw new ArgumentOutOfRangeException("Username already in the database...");
             }
 
-            await database.Users.AddAsync(newUser);
+            await database.Users.AddAsync(person);
             await database.SaveChangesAsync();
 
-            return Created("Created", newUser);
+            return Created("Created", person);
         }
 
         [HttpGet("/{userName}")]
@@ -53,10 +61,11 @@ namespace Project_EnterpriseSystem.Controllers
                 throw new ArgumentOutOfRangeException("User not found...");
             
             var DTO = new{
+                Id = person.Id,
                 Name = person.Username,
-                PlayListCount = person.ListOfPlaylists.Count,
-                Id = person.Id
+                PlayListCount = person.ListOfPlaylists.Count
             };
+
             return Ok(DTO);
         }
 

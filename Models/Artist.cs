@@ -9,7 +9,7 @@ namespace Project_EnterpriseSystem.Models
     public class Artist
     {
         [Key]
-        public Guid Id {get; set; } = new Guid();
+        public Guid Id {get; set; } = Guid.NewGuid();
         public string Name {get; set; } = "";
     }
 }

@@ -8,7 +8,7 @@ namespace Project_EnterpriseSystem.Models
 {
     public class Song
     {
-        public Guid Id {get; set; } = new Guid();
+        public Guid Id {get; set; } = Guid.NewGuid();
 
         public  string Name {get; set; } = "";
 
