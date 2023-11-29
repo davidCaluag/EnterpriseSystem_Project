@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc;
 using Project_EnterpriseSystem.Models;
+using Project_EnterpriseSystem.Services;
 
 namespace Project_EnterpriseSystem.Controllers
 {
@@ -12,6 +13,7 @@ namespace Project_EnterpriseSystem.Controllers
     [Route("api/[controller]")]
     public class UserPlaylist : ControllerBase
     {
+        private UserDatabase userDatabase = new UserDatabase();
         
 
     }
