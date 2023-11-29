@@ -14,8 +14,8 @@ namespace Project_EnterpriseSystem.Models
     */
     public class Playlist
     {
-        public Guid Id { get; } = new Guid();
-        public required string Title { get; set; }
+        public Guid Id { get; set; } = new Guid();
+        public string Title { get; set; }
         public int SongCount {get; set; }
         public List<Song> ListOfSongs {get; set; }
 

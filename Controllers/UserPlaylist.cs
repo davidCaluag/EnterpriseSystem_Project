@@ -14,7 +14,9 @@ namespace Project_EnterpriseSystem.Controllers
     [Route("api/[controller]")]
     public class UserPlaylist : ControllerBase
     {
-        private UserDatabase database = new();
+
+        private UserDatabase userDatabase = new UserDatabase();
+        //private UserDatabase database = new();
 
         
 

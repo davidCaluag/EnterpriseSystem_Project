@@ -8,7 +8,7 @@ namespace Project_EnterpriseSystem.Models
     public class Album
     {
         public Guid Id {get; } = new Guid();
-        public required string Name {get; set; }
+        public string Name {get; set; }
         public List<Song>? Songs { get; set; }
 
     }
