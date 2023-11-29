@@ -7,31 +7,36 @@ namespace Project_EnterpriseSystem.Models
 {
     public class UserPlaylist
     {
-        private List<Song> songs;
+        private List<Playlist> playlists;
         private string playlistTitle;
         private User user;
 
-        public List<Song> Playlist {
+        public List<Playlist> Playlists {
 
-            get=>songs; //Default getter;
+            get=>playlists; //Default getter;
             
             set{
 
             if(value == null || value.Count() <= 0)
                 throw new ArgumentNullException();
             
-            songs = value;
+            playlists = value;
             } 
         }
 
-        public void AddSong(Song newSong){
-            if(newSong == null)
+        public void AddSong(Song newSong, string playlist){
+            if(newSong == default || playlist == default)
                 throw new ArgumentNullException();
 
-            if(songs.Contains(newSong))
+            var selected = playlists.SingleOrDefault(x=>x.Title == playlist);
+            if(selected == default)
+                throw new ArgumentOutOfRangeException();
+            
+            
+            if(selected.ListOfSongs.Contains(newSong))
                 throw new Exception("Already in the playlist");
 
-            songs.Add(newSong);
+            selected.ListOfSongs.Add(newSong);
         }
 
         public string PlayListTitle {
