@@ -29,8 +29,8 @@ namespace Project_EnterpriseSystem.Models
 
         }
 
-        public void AddSong(Song newSong, string playlist){
-            if(newSong == default || playlist == default)
+        public void AddSong(Song newSong){
+            if(newSong == default)
                 throw new ArgumentNullException();
 
             
@@ -38,17 +38,19 @@ namespace Project_EnterpriseSystem.Models
                 throw new Exception("Already in the playlist");
 
             ListOfSongs.Add(newSong);
+            UpdateSongCount();
         }
 
-        public void DeleteSong(Song newSong, string playlist){
-            if(newSong == default || playlist == default)
+        public void DeleteSong(Song newSong){
+            if(newSong == default)
                 throw new ArgumentNullException();
 
             
-            if(ListOfSongs.Contains(newSong))
-                throw new Exception("Already in the playlist");
+            if(!ListOfSongs.Contains(newSong))
+                throw new Exception("Not in the playlist");
 
             ListOfSongs.Remove(newSong);
+            UpdateSongCount();
         }
 
         public string PlayListTitle {
@@ -63,7 +65,5 @@ namespace Project_EnterpriseSystem.Models
             Title = value;
             }  
         }
-
-        public Guid GetId{get => Id;}
     }
 }
