@@ -14,7 +14,7 @@ namespace Project_EnterpriseSystem.Models
     */
     public class User
     {
-        public Guid Id { get; } = new Guid();
+        public Guid Id { get; set; } = new Guid();
         public List<Playlist> ListOfPlaylists {get; set; }
         public string userName;
 

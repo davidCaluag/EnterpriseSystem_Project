@@ -7,10 +7,10 @@ namespace Project_EnterpriseSystem.Models
 {
     public class Song
     {
-        public Guid Id {get; } = new Guid();
+        public Guid Id {get; set; } = new Guid();
 
-        public required string Name {get; set; }
+        public  string Name {get; set; }
 
-        public required Artist Artist {get; set; }
+        public Artist Artist {get; set; }
     }
 }

@@ -9,7 +9,7 @@ using Project_EnterpriseSystem.Services;
 
 namespace Project_EnterpriseSystem.Migrations
 {
-    [DbContext(typeof(Database))]
+    [DbContext(typeof(UserDatabase))]
     partial class DatabaseModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

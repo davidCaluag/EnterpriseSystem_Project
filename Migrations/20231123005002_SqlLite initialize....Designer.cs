@@ -10,7 +10,7 @@ using Project_EnterpriseSystem.Services;
 
 namespace Project_EnterpriseSystem.Migrations
 {
-    [DbContext(typeof(Database))]
+    [DbContext(typeof(UserDatabase))]
     [Migration("20231123005002_SqlLite initialize...")]
     partial class SqlLiteinitialize
     {
