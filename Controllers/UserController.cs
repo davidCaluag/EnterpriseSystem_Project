@@ -72,5 +72,17 @@ namespace Project_EnterpriseSystem.Controllers
             return Ok($"Deleted {userName}");
             
         }
+
+        [HttpGet("/random")]
+
+        public async Task<IActionResult> GetRandomUser(){
+
+            Random newRandom = new();
+            newRandom.Next(0, database.Users.Count()-1);
+
+            var person = await database.Users.Take(newRandom.Next(0, database.Users.Count()-1)).ToListAsync();
+
+            return Ok(person);
+        }
     }
 }
