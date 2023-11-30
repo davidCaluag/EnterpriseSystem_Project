@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Project_EnterpriseSystem.Models
 {
@@ -12,7 +13,7 @@ namespace Project_EnterpriseSystem.Models
     properties like the title of the playlist and Id. It also Song Count just 
     to describe the playlist without entering it.
     */
-    public class Playlist
+    public class Playlist : IModelInterface
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Title { get; set; } = "";

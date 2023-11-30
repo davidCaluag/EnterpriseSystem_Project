@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Project_EnterpriseSystem.Models
 {
-    public class Artist
+    public class Artist : IModelInterface
     {
         [Key]
         public Guid Id {get; set; } = Guid.NewGuid();
