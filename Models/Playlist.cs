@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EnterpriseSystem_Project.Models;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Project_EnterpriseSystem.Models
@@ -19,6 +20,9 @@ namespace Project_EnterpriseSystem.Models
         public string Title { get; set; } = "";
         public int SongCount {get; set; }
         public List<Song> ListOfSongs {get; set; }
+        public Genre PlaylistGenre {get; set; } = new(){
+            GenreName = "Mixed" // Set the default Genre to mixed as playlists could have different songs in different genres. It'll only change when specified otherwise.
+        };
 
         public Playlist(){
             SongCount = 0; //initializing a playlist means it'll be 0 unless specified.

@@ -12,6 +12,9 @@ namespace Project_EnterpriseSystem.Controllers
     public class PlaylistController : ControllerBase
     {
         private UserDatabase database = new ();
-
+        [HttpGet]
+        public async Task<IActionResult> GetAllPlaylist(){
+            return Ok();
+        }
     }
 }
