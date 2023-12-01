@@ -115,6 +115,7 @@ namespace Project_EnterpriseSystem.Controllers
         public async Task<IActionResult> DeleteSong(Song song){
 
             if(_playlist.DeleteSong(song)){
+                await database.SaveChangesAsync();
                 return Ok("Deleted...");
             }
 
