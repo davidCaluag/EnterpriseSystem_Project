@@ -82,6 +82,22 @@ namespace Project_EnterpriseSystem.Controllers
             
         }
 
+        [HttpPut("/newPlaylist/{playlistName}/user/{userName}")]
+        public async Task<IActionResult> SetNewPlaylist(string username, string playlistName){
+            
+            var getUser = await database.Users.FindAsync(username);
+
+            if(getUser == null || getUser == default)
+                throw new ArgumentOutOfRangeException("User not found...");
+
+            Playlist newPlaylist = new(){
+                Title = playlistName
+            }; 
+            getUser.ListOfPlaylists.Add(newPlaylist);
+
+            return Created($"{newPlaylist.Title} is added in {getUser.Username}'s list of playlists...",newPlaylist);
+        }
+
         [HttpGet("/random")]
 
         public async Task<IActionResult> GetRandomUser(){
