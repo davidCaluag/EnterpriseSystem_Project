@@ -15,8 +15,8 @@ namespace Project_EnterpriseSystem.Controllers
     {
         
         private UserDatabase database = new ();
-        private User _selectedUser = default;
-        private Playlist _playlist = default;
+        private static User _selectedUser = default;
+        private static Playlist _playlist = default;
 
 
         /*
