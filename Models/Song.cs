@@ -13,6 +13,6 @@ namespace Project_EnterpriseSystem.Models
         public  string Name {get; set; } = "";
 
         public Artist Artist {get; set; } = new();
-        public Genre Genre { get; set; }
+        public Genre? Genre { get; set; }
     }
 }

@@ -16,14 +16,17 @@ namespace Project_EnterpriseSystem.Controllers
     {
         private UserDatabase database = new();
 
-        [HttpGet]
+        [HttpGet("allUser")]
         public async Task<IActionResult> GetAllUsers(){
 
             var userList = await database.Users.ToListAsync();
+            if(userList.Count() <= 0)
+                return NoContent();
+                
             return Ok(userList);    
         }
 
-        [HttpPut("/userName/{userName}/password/{password}")]
+        [HttpPut("username/{userName}/password/{password}")]
         public async Task<IActionResult> AddUser(string userName, string password){
             
             if(userName == default || password == default){
@@ -41,7 +44,7 @@ namespace Project_EnterpriseSystem.Controllers
             else   
                 throw new Exception("Password does not meet requirement...");
 
-            if(person != default){
+            if(database.Users.FirstOrDefaultAsync(x=>x.Username == person.Username) == default){
                 throw new ArgumentOutOfRangeException("Username already in the database...");
             }
 
@@ -51,14 +54,14 @@ namespace Project_EnterpriseSystem.Controllers
             return Created("Created", person);
         }
 
-        [HttpGet("/{userName}")]
+        [HttpGet("{userName}")]
 
         public async Task<IActionResult> FindUser(string userName){
 
-            var person =  await database.Users.FindAsync(userName);
+            var person = await database.Users.FirstOrDefaultAsync(x=>x.Username == userName);
 
             if(person == default)
-                throw new ArgumentOutOfRangeException("User not found...");
+                return BadRequest(person);
             
             var DTO = new{
                 Id = person.Id,
@@ -82,7 +85,7 @@ namespace Project_EnterpriseSystem.Controllers
             
         }
 
-        [HttpPut("/newPlaylist/{playlistName}/user/{userName}")]
+        [HttpPut("newPlaylist/{playlistName}/user/{userName}")]
         public async Task<IActionResult> SetNewPlaylist(string username, string playlistName){
             
             var getUser = await database.Users.FindAsync(username);
@@ -98,7 +101,7 @@ namespace Project_EnterpriseSystem.Controllers
             return Created($"{newPlaylist.Title} is added in {getUser.Username}'s list of playlists...",newPlaylist);
         }
 
-        [HttpGet("/random")]
+        [HttpGet("random")]
 
         public async Task<IActionResult> GetRandomUser(){
 

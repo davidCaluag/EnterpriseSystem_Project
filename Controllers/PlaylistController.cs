@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO.Pipelines;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +16,8 @@ namespace Project_EnterpriseSystem.Controllers
     {
         
         private UserDatabase database = new ();
-        private static User _selectedUser = default;
-        private static Playlist _playlist = default;
+        private static User? _selectedUser = default;
+        private static Playlist? _playlist = default;
 
 
         /*
@@ -33,9 +34,21 @@ namespace Project_EnterpriseSystem.Controllers
         Ask the professor whether this is fine or not.
         */
 
-        [HttpGet("/setuser/{userId}")]
-        public async Task<IActionResult> SetUser(Guid userId){
-            var user = await database.Users.FindAsync(userId);
+        [HttpGet]
+        public async Task<IActionResult> GetAllPlaylist(){
+
+            if(_selectedUser == default)
+                return BadRequest("Set user first before making requests!");
+           
+            if(_selectedUser.ListOfPlaylists.Count <= 0)
+                return NoContent();
+
+            return Ok(_selectedUser.ListOfPlaylists);
+        }
+
+        [HttpGet("setuser/{userName}")]
+        public async Task<IActionResult> SetUser(string userName){
+            var user = await database.Users.FirstOrDefaultAsync(x=>x.Username == userName);//.ToListAsync();
             
             if(user == default)
                 throw new ArgumentOutOfRangeException("User does not exist...");
@@ -44,7 +57,7 @@ namespace Project_EnterpriseSystem.Controllers
             return Ok("Found user");
         }
 
-        [HttpGet("/selectPlaylist/{playlistName}")]
+        [HttpPut("selectPlaylist/{playlistName}")]
         public async Task<IActionResult> SetPlaylist(string playlistName){
             var user = await database.Users.FindAsync(_selectedUser);
             
@@ -63,17 +76,17 @@ namespace Project_EnterpriseSystem.Controllers
             return Ok("Found playlist...");
         }
 
-        [HttpGet("/getplaylist")]
-        public async Task<IActionResult> GetAllPlaylist(){
-            //var allusers = new UserController(); 
+        // [HttpGet("getplaylist")]
+        // public async Task<IActionResult> GetAllPlaylist(){
+        //     //var allusers = new UserController(); 
 
-            if(_selectedUser == default)
-                throw new ArgumentOutOfRangeException("User does not exist...");
+        //     if(_selectedUser == default)
+        //         return BadRequest("User is empty.");
+        //     var result = await database.Users.Where(x=>x == _selectedUser).Include(x=>x.ListOfPlaylists).ToListAsync();
+        //     return Ok(result);
+        // }
 
-            return Ok(_selectedUser.ListOfPlaylists);
-        }
-
-        [HttpDelete("/{playlistName}")]
+        [HttpDelete("playlist/{playlistName}")]
         public async Task<IActionResult> DeletePlaylist(string playlistName){
 
             //Cant find user
@@ -94,7 +107,7 @@ namespace Project_EnterpriseSystem.Controllers
         }
         
 
-        [HttpPut("/playlistName/{playlistName}")]
+        [HttpPut("addPlaylist/{playlistName}")]
 
         public async Task<IActionResult> AddSong(Song newSong){
 
@@ -111,7 +124,7 @@ namespace Project_EnterpriseSystem.Controllers
             return Ok($"{newSong} added in {_playlist}...");
         }
 
-        [HttpDelete("/{songName}")]
+        [HttpDelete("song/{songName}")]
         public async Task<IActionResult> DeleteSong(Song song){
 
             if(_playlist.DeleteSong(song)){
