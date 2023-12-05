@@ -47,18 +47,20 @@ namespace Project_EnterpriseSystem.Models
             UpdateSongCount();
         }
 
-        public bool DeleteSong(Song newSong){
-            if(newSong == default)
+        public bool DeleteSong(string songName){
+            if(songName == default)
                 //throw new ArgumentNullException();
                 return false;
             
-            if(!ListOfSongs.Contains(newSong)){
+            var IsParsed = ListOfSongs.FirstOrDefault(x=>x.Name == songName);
+            
+            if(IsParsed == default){
                 //throw new Exception("Not in the playlist");
                 return false;
                 
             }
 
-            ListOfSongs.Remove(newSong);
+            ListOfSongs.Remove(IsParsed);
             UpdateSongCount();
 
             return true;

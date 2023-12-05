@@ -10,9 +10,11 @@ namespace Project_EnterpriseSystem.Models
     {
         public Guid Id {get; set; } = Guid.NewGuid();
 
-        public  string Name {get; set; } = "";
+        public string Name {get; set; } = "";
 
         public Artist Artist {get; set; } = new();
-        public Genre? Genre { get; set; }
+        public Genre Genre { get; set; } = new(){
+            GenreName = ""
+        };
     }
 }

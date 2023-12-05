@@ -37,7 +37,7 @@ namespace Project_EnterpriseSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllPlaylist(){
 
-            if(_selectedUser == default)
+            if(UserSet())
                 return BadRequest("Set user first before making requests!");
            
             if(_selectedUser.ListOfPlaylists.Count <= 0)
@@ -50,7 +50,7 @@ namespace Project_EnterpriseSystem.Controllers
         public async Task<IActionResult> SetUser(string userName){
             var user = await database.Users.FirstOrDefaultAsync(x=>x.Username == userName);//.ToListAsync();
             
-            if(user == default)
+            if(UserSet())
                 throw new ArgumentOutOfRangeException("User does not exist...");
 
             _selectedUser = user;
@@ -59,9 +59,10 @@ namespace Project_EnterpriseSystem.Controllers
 
         [HttpPut("selectPlaylist/{playlistName}")]
         public async Task<IActionResult> SetPlaylist(string playlistName){
+            
             var user = await database.Users.FindAsync(_selectedUser);
             
-            if(user == default)
+            if(UserSet())
                 throw new ArgumentOutOfRangeException("User is not selected...");
 
             var i = user.ListOfPlaylists.Find(x=>x.PlayListTitle == playlistName);
@@ -90,30 +91,37 @@ namespace Project_EnterpriseSystem.Controllers
         public async Task<IActionResult> DeletePlaylist(string playlistName){
 
             //Cant find user
-            if(_selectedUser == default)
+            if(UserSet())
                 throw new ArgumentNullException("User is null...");
 
             //Cant find playlist
-            if(_selectedUser.ListOfPlaylists.Find(x=>x.Title ==playlistName) == default){
+            if(_selectedUser.ListOfPlaylists.SingleOrDefault(x=>x.Title ==playlistName) == default){
                 throw new ArgumentNullException("Playlist not found...");
             }
+
             //Not sure if this works
             var playlist = _selectedUser.ListOfPlaylists.First(x=>x.Title == playlistName);
+            
+            
             //Delete the playlist
             _selectedUser.ListOfPlaylists.Remove(playlist);
-
             await database.SaveChangesAsync();
+
             return Ok($"Deleted {playlistName}");
         }
         
 
-        [HttpPut("addPlaylist/{playlistName}")]
+        [HttpPut("addsong")]
 
         public async Task<IActionResult> AddSong(Song newSong){
 
-            if(newSong == default || _selectedUser == default || _playlist == default)
-                throw new ArgumentNullException("Bro...");
+            if(newSong.Name == default)
+                throw new ArgumentNullException("Song name required.");
+
+            if(BothSet())
+                throw new ArgumentNullException("Set the user/playlist first.");
             
+
             //This can't be true...
             if(_selectedUser.ListOfPlaylists == null)
                 _selectedUser.ListOfPlaylists = new();
@@ -124,10 +132,13 @@ namespace Project_EnterpriseSystem.Controllers
             return Ok($"{newSong} added in {_playlist}...");
         }
 
-        [HttpDelete("song/{songName}")]
-        public async Task<IActionResult> DeleteSong(Song song){
+        [HttpDelete("deletesong/{songName}")]
+        public async Task<IActionResult> DeleteSong(string songName){
 
-            if(_playlist.DeleteSong(song)){
+            if(PlaylistSet())
+                throw new ArgumentNullException("Set the playlist first.");
+
+            if(_playlist.DeleteSong(songName)){
                 await database.SaveChangesAsync();
                 return Ok("Deleted...");
             }
@@ -135,6 +146,24 @@ namespace Project_EnterpriseSystem.Controllers
             throw new Exception("Cant find song...");
         }
 
-        
+        public bool BothSet(){
+        if(_playlist == default)
+            return false;
+        if(_selectedUser == default)
+            return false;
+        return true;
+        }
+        public bool PlaylistSet(){
+        if(_playlist == default)
+            return false;
+        return true;
+        }
+        public bool UserSet(){
+        if(_selectedUser == default)
+            return false;
+        return true;
+        }
     }
+
+    
 }
