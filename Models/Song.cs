@@ -6,7 +6,7 @@ using EnterpriseSystem_Project.Models;
 
 namespace Project_EnterpriseSystem.Models
 {
-    public class Song
+    public class Song : IModelInterface
     {
         public Guid Id {get; set; } = Guid.NewGuid();
 

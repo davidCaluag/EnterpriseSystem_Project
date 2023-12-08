@@ -12,7 +12,7 @@ namespace Project_EnterpriseSystem.Models
     list of playlists.
     
     */
-    public class User
+    public class User : IModelInterface
     {
         
         public Guid Id { get; set; } = Guid.NewGuid();
