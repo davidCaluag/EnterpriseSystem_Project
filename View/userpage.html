@@ -1,69 +1,51 @@
 <!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <style>
-        table {
-          font-family: arial, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
-        }
-        
-        td, th {
-          border: 1px solid #dddddd;
-          text-align: center;
-          padding: 8px;
-        }
-        
-        tr:nth-child(even) {
-          background-color: #dddddd;
-        }
-        </style>
-<table>
-    <div>
-    <div>
-
-    <th>
-    
-        <h2><a href="http://127.0.0.1:5500/Project/View/mainpage.html">Home Page</a></h2>
-    </th>
-    </div>
-    <div>
-    <th>
-        <h2><a href="http://127.0.0.1:5500/Project/View/userpage.html">User Page</a></h2>
-    </div>
-    </th>
-    <th>
-        <div>
-    <h2><a href="http://127.0.0.1:5500/Project/View/playlistpage.html">Playlist Page</a></h2>
-        </div>
-    </th>
-    <div>
-     <th>
-        <h2><a href="http://127.0.0.1:5500/Project/View/genrepage.html">Genre Page</a></h2>
-    </th>
-    </div>
-    </div>
-</table>
-
-<title>User Page</title>
-<h1>This is the User Page of the project</h1>
+    <link rel="stylesheet" type="text/css" href="basic.css">
+    <title>User Page</title>
 </head>
 
 <body>
-    <p>Select user</p>
-    <select id="SelectUser"></select>
-    <br><br>
-    <form>Enter Password</form>
-    <input type="text" id="userPassword">
-    <br><br><button id="DeleteUser">Delete User</button>
-    <br><br><button id="AccessUser">Access User</button>
-    <br><br>
-    <form>Username</form>
-    <input type="text" id="username"></form>
-    <br><br>
-    <form>Password</form>
-    <input type="text" id ="password">  
-    <br><br><button id="AddUser">Add A New User</button>
-    <p id = "result">Status: </p>
+    <header>
+        <h1>User Page</h1>
+    </header>
+
+    <nav>
+        <a href="http://127.0.0.1:5500/Project/View/mainpage.html">Home Page</a>
+        <a href="http://127.0.0.1:5500/Project/View/userpage.html">User Page</a>
+        <a href="http://127.0.0.1:5500/Project/View/playlistpage.html">Playlist Page</a>
+        <a href="http://127.0.0.1:5500/Project/View/genrepage.html">Genre Page</a>
+    </nav>
+
+    <main class="container">
+        <section>
+            <p>Select user</p>
+            <select id="SelectUser"></select>
+            <br><br>
+            <form>Enter Password</form>
+            <input type="text" id="userPassword">
+            <br><br>
+            <button id="DeleteUser">Delete User</button>
+            <br><br>
+            <button id="AccessUser">Access User</button>
+            <br><br>
+            <form>Username</form>
+            <input type="text" id="username">
+            <br><br>
+            <form>Password</form>
+            <input type="text" id="password">
+            <br><br>
+            <button id="AddUser">Add A New User</button>
+            <p id="result">Status: </p>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2023 Project
+    </footer>
+
     <script src="script.js"></script>
 </body>
+
+</html>

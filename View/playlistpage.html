@@ -1,59 +1,34 @@
 <!DOCTYPE html>
-
+<html lang="en">
 
 <head>
-    <style>
-        table {
-          font-family: arial, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
-        }
-        
-        td, th {
-          border: 1px solid #dddddd;
-          text-align: center;
-          padding: 8px;
-        }
-        
-        tr:nth-child(even) {
-          background-color: #dddddd;
-        }
-        </style>
-<table>
-    <div>
-    <div>
-
-    <th>
-    
-        <h2><a href="http://127.0.0.1:5500/Project/View/mainpage.html">Home Page</a></h2>
-    </th>
-    </div>
-    <div>
-    <th>
-        <h2><a href="http://127.0.0.1:5500/Project/View/userpage.html">User Page</a></h2>
-    </div>
-    </th>
-    <th>
-        <div>
-    <h2><a href="http://127.0.0.1:5500/Project/View/playlistpage.html">Playlist Page</a></h2>
-        </div>
-    </th>
-    <div>
-     <th>
-        <h2><a href="http://127.0.0.1:5500/Project/View/genrepage.html">Genre Page</a></h2>
-    </th>
-    </div>
-    </div>
-</table>
-
-<title>Playlist Page</title>
-<h1>This is the playlist page of the project</h1>
+    <link rel="stylesheet" type="text/css" href="basic.css">
+    <title>Playlist Page</title>
 </head>
 
-
 <body>
+    <header>
+        <h1>Playlist Page</h1>
+    </header>
 
-    <h2><a href="http://127.0.0.1:5500/Project/View/userpage.html">User Page</a></h2>
-    <h2><a href="http://127.0.0.1:5500/Project/View/playlistpage.html">Playlist Page</a></h2>
-    <h2><a href="http://127.0.0.1:5500/Project/View/genrepage.html">Genre Page</a></h2>
+    <nav>
+        <a href="http://127.0.0.1:5500/Project/View/mainpage.html">Home Page</a>
+        <a href="http://127.0.0.1:5500/Project/View/userpage.html">User Page</a>
+        <a href="http://127.0.0.1:5500/Project/View/playlistpage.html">Playlist Page</a>
+        <a href="http://127.0.0.1:5500/Project/View/genrepage.html">Genre Page</a>
+    </nav>
+
+    <main class="container">
+        <section>
+            <h2><a href="http://127.0.0.1:5500/Project/View/userpage.html">User Page</a></h2>
+            <h2><a href="http://127.0.0.1:5500/Project/View/playlistpage.html">Playlist Page</a></h2>
+            <h2><a href="http://127.0.0.1:5500/Project/View/genrepage.html">Genre Page</a></h2>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2023 Project
+    </footer>
 </body>
+
+</html>
