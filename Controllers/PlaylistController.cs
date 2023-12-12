@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Project_EnterpriseSystem.Models;
 using Project_EnterpriseSystem.Services;
 
@@ -44,6 +45,8 @@ namespace Project_EnterpriseSystem.Controllers
                 return NoContent();
 
             return Ok(_selectedUser.ListOfPlaylists);
+            
+            
         }
 
         [HttpGet("setuser/{userName}")]
