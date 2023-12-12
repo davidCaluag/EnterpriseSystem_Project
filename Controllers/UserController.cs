@@ -33,6 +33,11 @@ namespace Project_EnterpriseSystem.Controllers
                 throw new ArgumentNullException("Default parameters for user...");
             }
 
+            var findUser = database.Users.Where(x=>x.Username == userName);
+
+            if(findUser.Count() > 0){
+                throw new ArgumentOutOfRangeException("Username already in the database...");
+            }
             User person = new(){
                 Username = userName,
                 ListOfPlaylists = new(), //I already instructed the Model to instantiate this, but I just wanna make sure it does so there are no null.
@@ -43,10 +48,7 @@ namespace Project_EnterpriseSystem.Controllers
                 person.UserPasssword = password;
             else   
                 throw new Exception("Password does not meet requirement...");
-
-            if(database.Users.FirstOrDefaultAsync(x=>x.Username == person.Username) == default){
-                throw new ArgumentOutOfRangeException("Username already in the database...");
-            }
+        
 
             await database.Users.AddAsync(person);
             await database.SaveChangesAsync();
@@ -72,14 +74,29 @@ namespace Project_EnterpriseSystem.Controllers
             return Ok(DTO);
         }
 
-        [HttpDelete("/{userName}")]
-        public async Task<IActionResult> DeleteUser(string userName){
-            var person =  await database.Users.FindAsync(userName);
+        [HttpGet("access/{username}/{password}")]
+        public async Task<IActionResult> AccessUser(string username, string password)
+        {
+            var person = ValidateUserAndPassword(username, password);
 
             if(person == default)
-                throw new ArgumentOutOfRangeException("User not found...");
+                return BadRequest("Input is wrong");
+
+            return Ok("Granted");
+
+        }
+        [HttpDelete("{userName}/{password}")]
+        public async Task<IActionResult> DeleteUser(string userName, string password){
             
+            
+            var person = ValidateUserAndPassword(userName, password);
+
+            if(person == default)
+                return BadRequest("Input is wrong");
+
             database.Users.Remove(person);
+
+            await database.SaveChangesAsync();
 
             return Ok($"Deleted {userName}");
             
@@ -112,5 +129,20 @@ namespace Project_EnterpriseSystem.Controllers
 
             return Ok(person);
         }
+
+        public User ValidateUserAndPassword(string username, string password){
+
+            var person = database.Users.FirstOrDefaultAsync(x=>x.Username == username).Result;
+
+            if(person == default)
+                return null;
+
+             if(!person.UserPasssword.Equals(password))
+                return null;
+
+            return person;
+        }
     }
+
+    
 }
