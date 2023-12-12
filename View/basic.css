@@ -6,59 +6,58 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-  }
-  
-  .container {
+}
+
+.container {
     width: 80%;
     margin: 0 auto;
-  }
-  
-  header {
-    background-color: #333;
+}
+
+header {
+    background-color: #3A7CA5; /* Deep blue */
     color: #fff;
     padding: 10px 0;
     text-align: center;
-  }
-  
-  nav {
+}
+
+nav {
     display: flex;
     justify-content: space-around;
-    background-color: #444;
+    background-color: #D18C6F; /* Rusty orange */
     padding: 10px 0;
-  }
-  
-  nav a {
+}
+
+nav a {
     color: #fff;
     text-decoration: none;
-  }
-  
-  main {
+}
+
+main {
     padding: 20px 0;
-  }
-  
-  section {
+}
+
+section {
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 1px solid #4E5357; /* Pastel black-ish color */
     border-radius: 5px;
     margin: 20px 0;
     padding: 20px;
-  }
-  
-  footer {
-    background-color: #333;
+}
+
+footer {
+    background-color: #3A7CA5; /* Deep blue */
     color: #fff;
     text-align: center;
     padding: 10px 0;
-  }
-  
-  /* Responsive design */
-  @media (max-width: 768px) {
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
     .container {
-      width: 90%;
+        width: 90%;
     }
-  
+
     nav {
-      flex-direction: column;
+        flex-direction: column;
     }
-  }
-  
+}
