@@ -18,16 +18,11 @@ namespace Project_EnterpriseSystem.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Title { get; set; } = "";
-        public int SongCount {get; set; }
-        public List<Song> ListOfSongs {get; set; }
+        public int SongCount {get; set; } = 0;
+        public List<Song> ListOfSongs {get; set; } = new();
         public Genre PlaylistGenre {get; set; } = new(){
             GenreName = "Mixed" // Set the default Genre to mixed as playlists could have different songs in different genres. It'll only change when specified otherwise.
         };
-
-        public Playlist(){
-            SongCount = 0; //initializing a playlist means it'll be 0 unless specified.
-            ListOfSongs = new(); //initialize list early on so it's not null.
-        }
 
         public void UpdateSongCount(){
             SongCount = ListOfSongs.Count; //if the list of songs is empty, then 0.

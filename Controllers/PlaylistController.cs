@@ -20,16 +20,13 @@ namespace Project_EnterpriseSystem.Controllers
 
         
 
-        [HttpGet]
+        [HttpGet("getplaylist/{username}")]
         public async Task<IActionResult> GetAllPlaylist(string username){
 
             var _selectedUser = UserSet(username);
 
             if(_selectedUser == default)
                 return BadRequest("Set user first before making requests!");
-           
-            if(_selectedUser.ListOfPlaylists.Count <= 0)
-                return NoContent();
 
             return Ok(_selectedUser.ListOfPlaylists);
             
@@ -37,54 +34,43 @@ namespace Project_EnterpriseSystem.Controllers
         }
 
         [HttpPut("newPlaylist/{playlistName}/{username}")]
-        public async Task<IActionResult> SetNewPlaylist(string playlistName, string username){
+        public async Task<IActionResult> AddPlaylist(string playlistName, string username){
         
             var _selectedUser = UserSet(username);
+
             if(_selectedUser == default)
                 throw new ArgumentOutOfRangeException("User not set...");
 
             Playlist newPlaylist = new(){
-                Title = playlistName
+                Title = playlistName,
+                
             }; 
+            
+            //IT SHOULDNT EVEN BE NULL, SO WHY ISNT IT WORKNIG?!?!?!?!?
+            // if(_selectedUser.ListOfPlaylists == default)
+            //     _selectedUser.ListOfPlaylists = new();
+            
             _selectedUser.ListOfPlaylists.Add(newPlaylist);
+            database.Users.Update(_selectedUser);
+            var result = await database.SaveChangesAsync();
 
-            await database.SaveChangesAsync();
-            return Created($"{newPlaylist.Title} is added in {_selectedUser.Username}'s list of playlists...",newPlaylist);
+            return Created($"{newPlaylist.Title} is added in {_selectedUser.Username}'s list of playlists...",result);
         }
 
         
 
-        [HttpPut("selectPlaylist/{playlistName}/{username}")]
-        public async Task<IActionResult> SetPlaylist(string playlistName, string username){
-            
-            var _selectedUser = UserSet(username);
-            
-            if(_selectedUser == default)
-                throw new ArgumentOutOfRangeException("User is not selected...");
-
-
-            var i = _selectedUser.ListOfPlaylists.FirstOrDefault(x=>x.PlayListTitle == playlistName);
-           
-            if(i == default)
-                throw new Exception("Playlist not found...");
-
-            var _playlist = i;
-
-
-            return Ok("Found playlist...");
-        }
 
         [HttpDelete("playlist/{playlistName}/{username}")]
         public async Task<IActionResult> DeletePlaylist(string playlistName, string username){
 
             //Cant find user
-            User? _selectedUser = UserSet(username);
+            var _selectedUser = UserSet(username);
             
 
             if(_selectedUser == default || _selectedUser == null)
                 throw new ArgumentNullException("User is null...");
             
-            Playlist? _playlist = PlaylistSet(playlistName,_selectedUser);
+            var _playlist = PlaylistSet(playlistName,_selectedUser);
 
             //Cant find playlist
             if(_playlist == default || _selectedUser == null){
@@ -99,16 +85,12 @@ namespace Project_EnterpriseSystem.Controllers
             return Ok($"Deleted {playlistName}");
         }
         
-        
-        
-
-        
         public Playlist? PlaylistSet(string playlist, User user){
-         var setPlaylist = user.ListOfPlaylists.SingleOrDefault(x=>x.Title == playlist);
+         var setPlaylist = user.ListOfPlaylists.FirstOrDefault(x=>x.Title == playlist);
          return setPlaylist;
         }
         public User? UserSet(string username){
-        var user = database.Users.SingleOrDefault(x=>x.Username == username);
+        var user = database.Users.FirstOrDefault(x=>x.Username == username);
             return user; //its ok if its default
         }
 
@@ -190,3 +172,22 @@ namespace Project_EnterpriseSystem.Controllers
 
             //     return Ok("Found user");
             // }
+            // [HttpPut("selectPlaylist/{playlistName}/{username}")]
+        // public async Task<IActionResult> SetPlaylist(string playlistName, string username){
+            
+        //     var _selectedUser = UserSet(username);
+            
+        //     if(_selectedUser == default || _selectedUser == null)
+        //         throw new ArgumentOutOfRangeException("User is not selected...");
+
+
+        //     var i = _selectedUser.ListOfPlaylists.FirstOrDefault(x=>x.PlayListTitle == playlistName);
+           
+        //     if(i == default)
+        //         throw new Exception("Playlist not found...");
+
+        //     var _playlist = i;
+
+
+        //     return Ok("Found playlist...");
+        // }
