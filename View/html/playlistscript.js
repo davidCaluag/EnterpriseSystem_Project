@@ -20,4 +20,9 @@ window.onload = function(){
             selectObject.appendChild(newOption);
         });
     }
+
+    document.getElementById("AddPlaylist").onclick() = function(){
+        
+        fetch("",{method:"PUT"})
+    }
 }
