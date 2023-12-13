@@ -16,61 +16,75 @@ namespace Project_EnterpriseSystem.Controllers
     public class PlaylistController : ControllerBase
     {
         
-        private UserDatabase database = new ();
+        private UserDatabase _database = new ();
 
         
 
         [HttpGet("getplaylist/{username}")]
         public async Task<IActionResult> GetAllPlaylist(string username){
 
-            var _selectedUser = UserSet(username);
+            var _selectedUser = await UserSet(username);
+
 
             if(_selectedUser == default)
                 return BadRequest("Set user first before making requests!");
+                
+            var list = _selectedUser.ListOfPlaylists.ToList();
 
-            return Ok(_selectedUser.ListOfPlaylists);
+            return Ok(list);
             
             
         }
 
-        [HttpPut("newPlaylist/{playlistName}/{username}")]
-        public async Task<IActionResult> AddPlaylist(string playlistName, string username){
+        [HttpPut("newplaylist/{playlistName}/{userName}")]
+        public async Task<IActionResult> AddPlaylist(string playlistName, string userName){
         
-            var _selectedUser = UserSet(username);
-
-            if(_selectedUser == default)
+            var _selectedUser = await UserSet(userName);
+            
+            if(_selectedUser == default || _selectedUser == null)
                 throw new ArgumentOutOfRangeException("User not set...");
 
-            Playlist newPlaylist = new(){
-                Title = playlistName,
-                
-            }; 
-            
-            //IT SHOULDNT EVEN BE NULL, SO WHY ISNT IT WORKNIG?!?!?!?!?
-            // if(_selectedUser.ListOfPlaylists == default)
-            //     _selectedUser.ListOfPlaylists = new();
-            
-            _selectedUser.ListOfPlaylists.Add(newPlaylist);
-            database.Users.Update(_selectedUser);
-            var result = await database.SaveChangesAsync();
+            if(_selectedUser.ListOfPlaylists.SingleOrDefault(x=>x.PlayListTitle == playlistName) != default)
+                return BadRequest("Already there");
 
-            return Created($"{newPlaylist.Title} is added in {_selectedUser.Username}'s list of playlists...",result);
+            int beforeAddingCount = _selectedUser.ListOfPlaylists.Count;
+
+            Playlist newPlaylist = new(){
+                PlayListTitle = playlistName,
+                user = _selectedUser
+            };
+            //THIS ISNT WORKING. NOT SURE WHY AND IM GETTING ABSOLUTELY LIVID LMAO
+
+            // var _playlist = await __database.Users.Where(x=>x == _selectedUser).Include(x=>x.ListOfPlaylists).FirstAsync();
+
+             _selectedUser.AddPlaylist(newPlaylist);
+            _database.Users.Update(_selectedUser);
+            _database.Playlists.Update(newPlaylist);
+
+
+            //THIS DOESNT TRIGGER SO THE SELECTED USER HAS A NEW PLAYLIST. WHY WONT IT ADD?
+            if(_selectedUser.ListOfPlaylists.Count == beforeAddingCount)
+                return BadRequest("DID NOT ADD");
+
+            //await _database.SaveChangesAsync();
+            
+            await _database.SaveChangesAsync();
+            //_database.Users.Update(_selectedUser);
+
+            return Ok($"{newPlaylist.PlayListTitle} is added in {_selectedUser.Username}'s list of playlists...");
         }
 
-        
-
-
-        [HttpDelete("playlist/{playlistName}/{username}")]
+        [HttpDelete("deleteplaylist/{playlistName}/{username}")]
         public async Task<IActionResult> DeletePlaylist(string playlistName, string username){
 
             //Cant find user
-            var _selectedUser = UserSet(username);
+            var _selectedUser = await UserSet(username);
             
 
             if(_selectedUser == default || _selectedUser == null)
                 throw new ArgumentNullException("User is null...");
             
-            var _playlist = PlaylistSet(playlistName,_selectedUser);
+            var _playlist = await PlaylistSet(playlistName,_selectedUser);
 
             //Cant find playlist
             if(_playlist == default || _selectedUser == null){
@@ -80,17 +94,17 @@ namespace Project_EnterpriseSystem.Controllers
         
             //Delete the playlist
             _selectedUser.ListOfPlaylists.Remove(_playlist);
-            await database.SaveChangesAsync();
+            await _database.SaveChangesAsync();
 
             return Ok($"Deleted {playlistName}");
         }
         
-        public Playlist? PlaylistSet(string playlist, User user){
-         var setPlaylist = user.ListOfPlaylists.FirstOrDefault(x=>x.Title == playlist);
+        public async Task<Playlist> PlaylistSet(string playlist, User user){
+         var setPlaylist = user.ListOfPlaylists.Where(x=>x.PlayListTitle == playlist).FirstOrDefault();
          return setPlaylist;
         }
-        public User? UserSet(string username){
-        var user = database.Users.FirstOrDefault(x=>x.Username == username);
+        public async Task<User> UserSet(string username){
+        var user = _database.Users.Include(x=>x.ListOfPlaylists).Where(x=>x.Username==username).FirstOrDefault();
             return user; //its ok if its default
         }
 
@@ -130,7 +144,7 @@ namespace Project_EnterpriseSystem.Controllers
             
         //     _playlist.AddSong(newSong);
             
-        //     await database.SaveChangesAsync();
+        //     await _database.SaveChangesAsync();
         //     return Ok($"{newSong} added in {_playlist}...");
         // }
 
@@ -139,7 +153,7 @@ namespace Project_EnterpriseSystem.Controllers
             
         //     if(BothSet())
         //     if(_playlist.DeleteSong(songName)){
-        //         await database.SaveChangesAsync();
+        //         await _database.SaveChangesAsync();
         //         return Ok("Deleted...");
         //     }
 
@@ -158,12 +172,12 @@ namespace Project_EnterpriseSystem.Controllers
 
         //     if(_selectedUser == default)
         //         return BadRequest("User is empty.");
-        //     var result = await database.Users.Where(x=>x == _selectedUser).Include(x=>x.ListOfPlaylists).ToListAsync();
+        //     var result = await _database.Users.Where(x=>x == _selectedUser).Include(x=>x.ListOfPlaylists).ToListAsync();
         //     return Ok(result);
         // }
         // [HttpGet("setuser/{userName}")]
             // public async Task<IActionResult> SetUser(string userName){
-            //     var user = await database.Users.FirstOrDefaultAsync(x=>x.Username == userName);//.ToListAsync();
+            //     var user = await _database.Users.FirstOrDefaultAsync(x=>x.Username == userName);//.ToListAsync();
                 
             //     if(user == default)
             //         throw new ArgumentOutOfRangeException("User does not exist...");

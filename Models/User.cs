@@ -20,6 +20,12 @@ namespace Project_EnterpriseSystem.Models
         public string userName = "";
         private string Password = "123456";
 
+        public User(){
+            Playlist newPlaylist = new(){
+                PlayListTitle = "Generic Playlist"
+            };
+            ListOfPlaylists.Add(newPlaylist);
+        }
         public string UserPasssword {
             get{
             return Password;    
@@ -34,6 +40,10 @@ namespace Project_EnterpriseSystem.Models
 
             userName = value;
             }
+        }
+
+        public void AddPlaylist(Playlist newPlaylist){
+            ListOfPlaylists.Add(newPlaylist);
         }
         public bool ValidatePassword(string pw){
             if(pw.Length < 6)

@@ -14,12 +14,12 @@ namespace Project_EnterpriseSystem.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private UserDatabase database = new();
+        private UserDatabase _database = new();
 
-        [HttpGet("allUser")]
+        [HttpGet("alluser")]
         public async Task<IActionResult> GetAllUsers(){
 
-            var userList = await database.Users.ToListAsync();
+            var userList = await _database.Users.ToListAsync();
             if(userList.Count() <= 0)
                 return NoContent();
                 
@@ -33,10 +33,10 @@ namespace Project_EnterpriseSystem.Controllers
                 throw new ArgumentNullException("Default parameters for user...");
             }
 
-            var findUser = database.Users.Where(x=>x.Username == userName);
+            var findUser = _database.Users.Where(x=>x.Username == userName);
 
             if(findUser.Count() > 0){
-                throw new ArgumentOutOfRangeException("Username already in the database...");
+                throw new ArgumentOutOfRangeException("Username already in the _database...");
             }
             User person = new(){
                 Username = userName,
@@ -50,17 +50,17 @@ namespace Project_EnterpriseSystem.Controllers
                 throw new Exception("Password does not meet requirement...");
         
 
-            await database.Users.AddAsync(person);
-            await database.SaveChangesAsync();
+            await _database.Users.AddAsync(person);
+            await _database.SaveChangesAsync();
 
             return Created("Created", person);
         }
 
-        [HttpGet("{userName}")]
+        [HttpGet("{username}")]
 
         public async Task<IActionResult> FindUser(string userName){
 
-            var person = await database.Users.FirstOrDefaultAsync(x=>x.Username == userName);
+            var person = await _database.Users.FirstOrDefaultAsync(x=>x.Username == userName);
 
             if(person == default)
                 return BadRequest(person);
@@ -94,9 +94,9 @@ namespace Project_EnterpriseSystem.Controllers
             if(person == default)
                 return BadRequest("Input is wrong");
 
-            database.Users.Remove(person);
+            _database.Users.Remove(person);
 
-            await database.SaveChangesAsync();
+            await _database.SaveChangesAsync();
 
             return Ok($"Deleted {userName}");
             
@@ -108,16 +108,16 @@ namespace Project_EnterpriseSystem.Controllers
         public async Task<IActionResult> GetRandomUser(){
 
             Random newRandom = new();
-            int randomNumber = newRandom.Next(0, database.Users.Count()-1);
+            int randomNumber = newRandom.Next(0, _database.Users.Count()-1);
             
-            var person = database.Users.Skip(randomNumber).Take(1);
+            var person = _database.Users.Skip(randomNumber).Take(1);
 
             return Ok(person);
         }
 
         public User? ValidateUserAndPassword(string username, string password){
 
-            var person = database.Users.FirstOrDefaultAsync(x=>x.Username == username).Result;
+            var person = _database.Users.FirstOrDefaultAsync(x=>x.Username == username).Result;
 
             if(person == default)
                 return null;

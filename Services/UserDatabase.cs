@@ -15,6 +15,8 @@ namespace Project_EnterpriseSystem.Services
 
         public DbSet<User> Users {get; set;}
 
+        public DbSet<Playlist> Playlists {get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("FileName=MusicDatabase.db");

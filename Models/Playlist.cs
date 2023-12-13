@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using EnterpriseSystem_Project.Models;
@@ -17,12 +18,16 @@ namespace Project_EnterpriseSystem.Models
     public class Playlist : IModelInterface
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string Title { get; set; } = "";
+
+        public User user {get; set;}
+        private string Title { get; set; } = "";
         public int SongCount {get; set; } = 0;
         public List<Song> ListOfSongs {get; set; } = new();
-        public Genre PlaylistGenre {get; set; } = new(){
-            GenreName = "Mixed" // Set the default Genre to mixed as playlists could have different songs in different genres. It'll only change when specified otherwise.
-        };
+        public Genre PlaylistGenre {get; set; }
+        
+        public Playlist(){
+            PlaylistGenre = new(){GenreName = "Mixed"};
+        }
 
         public void UpdateSongCount(){
             SongCount = ListOfSongs.Count; //if the list of songs is empty, then 0.

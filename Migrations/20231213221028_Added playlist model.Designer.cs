@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_EnterpriseSystem.Services;
 
@@ -10,9 +11,11 @@ using Project_EnterpriseSystem.Services;
 namespace Project_EnterpriseSystem.Migrations
 {
     [DbContext(typeof(UserDatabase))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [Migration("20231213221028_Added playlist model")]
+    partial class Addedplaylistmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.14");
@@ -76,7 +79,7 @@ namespace Project_EnterpriseSystem.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Playlist");
+                    b.ToTable("Playlists");
                 });
 
             modelBuilder.Entity("Project_EnterpriseSystem.Models.Song", b =>
