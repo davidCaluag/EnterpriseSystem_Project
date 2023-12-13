@@ -38,7 +38,7 @@ namespace Project_EnterpriseSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllPlaylist(){
 
-            if(UserSet())
+            if(_selectedUser == default)
                 return BadRequest("Set user first before making requests!");
            
             if(_selectedUser.ListOfPlaylists.Count <= 0)
@@ -49,26 +49,42 @@ namespace Project_EnterpriseSystem.Controllers
             
         }
 
+        [HttpPut("newPlaylist/{playlistName}/")]
+        public async Task<IActionResult> SetNewPlaylist(string playlistName){
+        
+
+            if(_selectedUser == null)
+                throw new ArgumentOutOfRangeException("User not set...");
+
+            Playlist newPlaylist = new(){
+                Title = playlistName
+            }; 
+            _selectedUser.ListOfPlaylists.Add(newPlaylist);
+
+            await database.SaveChangesAsync();
+            return Created($"{newPlaylist.Title} is added in {_selectedUser.Username}'s list of playlists...",newPlaylist);
+        }
+
         [HttpGet("setuser/{userName}")]
         public async Task<IActionResult> SetUser(string userName){
             var user = await database.Users.FirstOrDefaultAsync(x=>x.Username == userName);//.ToListAsync();
             
-            if(UserSet())
+            if(user == default)
                 throw new ArgumentOutOfRangeException("User does not exist...");
 
             _selectedUser = user;
+
             return Ok("Found user");
         }
 
         [HttpPut("selectPlaylist/{playlistName}")]
         public async Task<IActionResult> SetPlaylist(string playlistName){
             
-            var user = await database.Users.FindAsync(_selectedUser);
-            
-            if(UserSet())
+
+            if(_selectedUser == default)
                 throw new ArgumentOutOfRangeException("User is not selected...");
 
-            var i = user.ListOfPlaylists.Find(x=>x.PlayListTitle == playlistName);
+            var i = _selectedUser.ListOfPlaylists.FirstOrDefault(x=>x.PlayListTitle == playlistName);
            
             if(i == default)
                 throw new Exception("Something happened idk tho");
@@ -94,7 +110,7 @@ namespace Project_EnterpriseSystem.Controllers
         public async Task<IActionResult> DeletePlaylist(string playlistName){
 
             //Cant find user
-            if(UserSet())
+            if(_selectedUser == default)
                 throw new ArgumentNullException("User is null...");
 
             //Cant find playlist
@@ -124,7 +140,6 @@ namespace Project_EnterpriseSystem.Controllers
             if(BothSet())
                 throw new ArgumentNullException("Set the user/playlist first.");
             
-
             //This can't be true...
             if(_selectedUser.ListOfPlaylists == null)
                 _selectedUser.ListOfPlaylists = new();
@@ -137,10 +152,8 @@ namespace Project_EnterpriseSystem.Controllers
 
         [HttpDelete("deletesong/{songName}")]
         public async Task<IActionResult> DeleteSong(string songName){
-
-            if(PlaylistSet())
-                throw new ArgumentNullException("Set the playlist first.");
-
+            
+            if(BothSet())
             if(_playlist.DeleteSong(songName)){
                 await database.SaveChangesAsync();
                 return Ok("Deleted...");
@@ -156,13 +169,15 @@ namespace Project_EnterpriseSystem.Controllers
             return false;
         return true;
         }
-        public bool PlaylistSet(){
-        if(_playlist == default)
+        public bool PlaylistSet(string playlist){
+        if(_selectedUser == default)
+            return false;
+        if(_selectedUser.ListOfPlaylists.FirstOrDefault(x=>x.Title == playlist) == default)
             return false;
         return true;
         }
-        public bool UserSet(){
-        if(_selectedUser == default)
+        public bool UserSet(string username){
+        if(database.Users.FirstOrDefaultAsync(x=>x.Username == username) == default)
             return false;
         return true;
         }

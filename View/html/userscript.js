@@ -23,6 +23,17 @@ window.onload = function () {
                 .then(response => updateStatus("Status: " + response.statusText));
         };
 
+        document.getElementById("Random").onclick = function () {
+            
+            
+            fetch("http://localhost:5109/api/user/random", {
+                method: "GET"
+            })  
+                .then(response => response.json())
+                .then(data => localStorage.setItem("username", data[0].username)+console.log(data[0].username))
+                .then(window.location.href = "http://127.0.0.1:5500/Project/View/html/playlist.html");
+        };
+
         document.getElementById("AccessUser").onclick = function () {
             const username = document.getElementById("SelectUser").value;
             const password = document.getElementById("userPassword").value;
