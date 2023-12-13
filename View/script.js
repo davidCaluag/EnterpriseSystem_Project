@@ -35,7 +35,7 @@ window.onload = function () {
         fetch(`http://localhost:5109/api/user/access/${username}/${password}`, {
             method: "GET"
         })
-            .then(response => response.json())
+            //.then(response => response.json())
             .then(response => updateStatus("Status: " + response.statusText));
     };
 
@@ -51,7 +51,7 @@ window.onload = function () {
         fetch(`http://localhost:5109/api/user/${username}/${password}`, {
             method: "DELETE"
         })
-            .then(response => response.json())
+            //.then(response => response.json())
             .then(response => updateStatus("Status: " + response.statusText));
     };
 
