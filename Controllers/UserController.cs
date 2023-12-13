@@ -115,7 +115,7 @@ namespace Project_EnterpriseSystem.Controllers
             return Ok(person);
         }
 
-        public User ValidateUserAndPassword(string username, string password){
+        public User? ValidateUserAndPassword(string username, string password){
 
             var person = database.Users.FirstOrDefaultAsync(x=>x.Username == username).Result;
 
