@@ -34,8 +34,8 @@ window.onload = function(){
         if(playlistName === "")
             alert("Input field is empty!")
 
-        fetch(`http://localhost:5109/api/playlist/newPlaylist/${playlistName}/${username}`,{method:"PUT"})
-        .then(response => alert(response.value));
+        fetch(`http://localhost:5109/api/playlist/newPlaylist/${playlistName}/${username}`,{method:"PUT"});
+        //.then(response => alert(response.value));
     }
 
     document.getElementById("DeletePlaylist").onclick = function(){
@@ -44,7 +44,7 @@ window.onload = function(){
         //get username
         const username = localStorage.getItem("username");
 
-        fetch(`http://localhost:5109/api/playlist/deleteplaylist/${playlistName}/${username}/`,{method:"PUT"})
-        .then(response => alert(response));
+        fetch(`http://localhost:5109/api/playlist/deleteplaylist/${playlistName}/${username}/`,{method:"PUT"});
+        //.then(response => alert(response));
     }
 }

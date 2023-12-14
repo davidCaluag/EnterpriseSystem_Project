@@ -13,7 +13,6 @@ window.onload = function () {
 
             if (username === "" || password === "") {
                 alert("Input field(s) is/are empty.");
-                return;
             }
 
             fetch(`http://localhost:5109/api/user/username/${username}/password/${password}`, {
@@ -62,10 +61,9 @@ window.onload = function () {
 
             if (username === "" || password === "") {
                 alert("Input field(s) is/are empty.");
-                return;
-            }
+                }
 
-            fetch(`http://localhost:5109/api/user/${username}/${password}`, {
+            fetch(`http://localhost:5109/api/user/deleteuser/${username}/${password}`, {
                 method: "DELETE"
             })
                 //.then(response => response.json())
@@ -84,9 +82,8 @@ window.onload = function () {
         function updateStatus(message) {
             const stat = document.getElementById("result");
             stat.innerHTML = message;
-            if(message !== "Status: OK")
-                alert(message);
-        }
+            if(message !== "Status: OK");
+            }
     
     }
 };

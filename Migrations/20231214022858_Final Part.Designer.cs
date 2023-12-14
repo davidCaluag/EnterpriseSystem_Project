@@ -11,8 +11,8 @@ using Project_EnterpriseSystem.Services;
 namespace Project_EnterpriseSystem.Migrations
 {
     [DbContext(typeof(UserDatabase))]
-    [Migration("20231214002426_New additions")]
-    partial class Newadditions
+    [Migration("20231214022858_Final Part")]
+    partial class FinalPart
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,7 +88,7 @@ namespace Project_EnterpriseSystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("ArtistId")
+                    b.Property<Guid>("ArtistObjectId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("GenreId")
@@ -103,7 +103,7 @@ namespace Project_EnterpriseSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArtistId");
+                    b.HasIndex("ArtistObjectId");
 
                     b.HasIndex("GenreId");
 
@@ -150,9 +150,9 @@ namespace Project_EnterpriseSystem.Migrations
 
             modelBuilder.Entity("Project_EnterpriseSystem.Models.Song", b =>
                 {
-                    b.HasOne("Project_EnterpriseSystem.Models.Artist", "Artist")
+                    b.HasOne("Project_EnterpriseSystem.Models.Artist", "ArtistObject")
                         .WithMany()
-                        .HasForeignKey("ArtistId")
+                        .HasForeignKey("ArtistObjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -166,7 +166,7 @@ namespace Project_EnterpriseSystem.Migrations
                         .WithMany("ListOfSongs")
                         .HasForeignKey("PlaylistId");
 
-                    b.Navigation("Artist");
+                    b.Navigation("ArtistObject");
 
                     b.Navigation("Genre");
                 });
