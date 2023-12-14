@@ -76,14 +76,14 @@ namespace Project_EnterpriseSystem.Controllers
                 return BadRequest("DID NOT ADD");
 
             //await _database.SaveChangesAsync();
-
+            
             await _database.SaveChangesAsync();
             //_database.Users.Update(_selectedUser);
 
             return Ok($"{newPlaylist.PlayListTitle} is added in {_selectedUser.Username}'s list of playlists...");
         }
 
-        [HttpDelete("deleteplaylist/{playlistName}/{username}")]
+        [HttpPut("deleteplaylist/{playlistName}/{username}")]
         public async Task<IActionResult> DeletePlaylist(string playlistName, string username){
 
             //Cant find user
@@ -103,6 +103,8 @@ namespace Project_EnterpriseSystem.Controllers
         
             //Delete the playlist
             _selectedUser.ListOfPlaylists.Remove(_playlist);
+            _database.Playlists.Remove(_playlist);
+            _database.Users.Update(_selectedUser);
             await _database.SaveChangesAsync();
 
             return Ok($"Deleted {playlistName}");

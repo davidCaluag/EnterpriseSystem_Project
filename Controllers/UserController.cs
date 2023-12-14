@@ -28,6 +28,18 @@ namespace Project_EnterpriseSystem.Controllers
             }
             return Ok(userList);    
         }
+        [HttpGet("alluserpluspassword")]
+        public async Task<IActionResult> GetAllUsersPlusPassword(){
+
+            var userList = await _database.Users.ToListAsync();
+            if(userList.Count() <= 0)
+                return NoContent();
+            
+            // foreach(var user in userList){
+            //     user.UserPasssword = "**********";
+            // }
+            return Ok(userList);    
+        }
 
         [HttpPut("username/{userName}/password/{password}")]
         public async Task<IActionResult> AddUser(string userName, string password){

@@ -9,6 +9,7 @@ window.onload = function(){
     const usertag = document.getElementById("usertag");
 
     usertag.innerHTML = username + "'s playlist list";
+    const selectObject = document.getElementById("playlistSelect");
 
     fetch(`http://localhost:5109/api/playlist/getplaylist/${username}`)
             .then(response => response.json())
@@ -17,10 +18,9 @@ window.onload = function(){
     function populateSelectPlaylist(data) {
         data.forEach(playlist => {
             const newOption = document.createElement("option");
-            const selectObject = document.getElementById("playlistSelect");
-            const textPlaylist = document.getElementById("selectedPlaylist");
-            newOption.innerHTML = playlist.PlaylistTitle;
-            textPlaylist.innerHTML = "Selected Playlist: "+ playlist.PlaylistTitle;
+            
+            newOption.innerHTML = playlist.title;
+            
             selectObject.appendChild(newOption);
         });
     }
@@ -36,5 +36,15 @@ window.onload = function(){
 
         fetch(`http://localhost:5109/api/playlist/newPlaylist/${playlistName}/${username}`,{method:"PUT"})
         .then(response => alert(response.value));
+    }
+
+    document.getElementById("DeletePlaylist").onclick = function(){
+        //get playlist name
+        const playlistName = document.getElementById("playlistSelect").value;
+        //get username
+        const username = localStorage.getItem("username");
+
+        fetch(`http://localhost:5109/api/playlist/deleteplaylist/${playlistName}/${username}/`,{method:"PUT"})
+        .then(response => alert(response));
     }
 }
