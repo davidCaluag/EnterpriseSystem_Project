@@ -17,7 +17,10 @@ window.onload = function(){
     function populateSelectPlaylist(data) {
         data.forEach(playlist => {
             const newOption = document.createElement("option");
-            newOption.innerHTML = playlist.Title;
+            const selectObject = document.getElementById("playlistSelect");
+            const textPlaylist = document.getElementById("selectedPlaylist");
+            newOption.innerHTML = playlist.PlaylistTitle;
+            textPlaylist.innerHTML = "Selected Playlist: "+ playlist.PlaylistTitle;
             selectObject.appendChild(newOption);
         });
     }

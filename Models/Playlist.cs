@@ -19,8 +19,8 @@ namespace Project_EnterpriseSystem.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        public User user {get; set;}
-        private string Title { get; set; } = "";
+        public User? user {get; set;} = default;
+        public string Title { get; set; } = "";
         public int SongCount {get; set; } = 0;
         public List<Song> ListOfSongs {get; set; } = new();
         public Genre PlaylistGenre {get; set; }
@@ -28,6 +28,7 @@ namespace Project_EnterpriseSystem.Models
         public Playlist(){
             PlaylistGenre = new(){GenreName = "Mixed"};
         }
+
 
         public void UpdateSongCount(){
             SongCount = ListOfSongs.Count; //if the list of songs is empty, then 0.

@@ -67,7 +67,7 @@ namespace Project_EnterpriseSystem.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("userId")
+                    b.Property<Guid?>("userId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -85,7 +85,7 @@ namespace Project_EnterpriseSystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("ArtistId")
+                    b.Property<Guid>("ArtistObjectId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("GenreId")
@@ -100,7 +100,7 @@ namespace Project_EnterpriseSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArtistId");
+                    b.HasIndex("ArtistObjectId");
 
                     b.HasIndex("GenreId");
 
@@ -138,9 +138,7 @@ namespace Project_EnterpriseSystem.Migrations
 
                     b.HasOne("Project_EnterpriseSystem.Models.User", "user")
                         .WithMany("ListOfPlaylists")
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("userId");
 
                     b.Navigation("PlaylistGenre");
 
@@ -149,9 +147,9 @@ namespace Project_EnterpriseSystem.Migrations
 
             modelBuilder.Entity("Project_EnterpriseSystem.Models.Song", b =>
                 {
-                    b.HasOne("Project_EnterpriseSystem.Models.Artist", "Artist")
+                    b.HasOne("Project_EnterpriseSystem.Models.Artist", "ArtistObject")
                         .WithMany()
-                        .HasForeignKey("ArtistId")
+                        .HasForeignKey("ArtistObjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -165,7 +163,7 @@ namespace Project_EnterpriseSystem.Migrations
                         .WithMany("ListOfSongs")
                         .HasForeignKey("PlaylistId");
 
-                    b.Navigation("Artist");
+                    b.Navigation("ArtistObject");
 
                     b.Navigation("Genre");
                 });

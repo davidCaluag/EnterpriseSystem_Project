@@ -28,23 +28,31 @@ namespace Project_EnterpriseSystem.Controllers
 
             if(_selectedUser == default)
                 return BadRequest("Set user first before making requests!");
-                
-            var list = _selectedUser.ListOfPlaylists.ToList();
+            
+            List<Playlist> returnList = new();
 
+            var list = _selectedUser.ListOfPlaylists.ToList().AsReadOnly();
+            foreach(var i in list){
+                i.user = default;
+            }
+       
             return Ok(list);
-            
-            
         }
 
         [HttpPut("newplaylist/{playlistName}/{userName}")]
         public async Task<IActionResult> AddPlaylist(string playlistName, string userName){
         
-            var _selectedUser = await UserSet(userName);
-            
+            //User _selectedUser = await UserSet(userName);
+
+            var _selectedUser = await _database.Users
+                                .Where(x=>x.Username==userName)
+                                .Include(x=>x.ListOfPlaylists)
+                                .FirstOrDefaultAsync();
+
             if(_selectedUser == default || _selectedUser == null)
                 throw new ArgumentOutOfRangeException("User not set...");
 
-            if(_selectedUser.ListOfPlaylists.SingleOrDefault(x=>x.PlayListTitle == playlistName) != default)
+            if(_selectedUser.ListOfPlaylists.Any(x=>x.PlayListTitle == playlistName) != default)
                 return BadRequest("Already there");
 
             int beforeAddingCount = _selectedUser.ListOfPlaylists.Count;
@@ -58,8 +66,9 @@ namespace Project_EnterpriseSystem.Controllers
             // var _playlist = await __database.Users.Where(x=>x == _selectedUser).Include(x=>x.ListOfPlaylists).FirstAsync();
 
              _selectedUser.AddPlaylist(newPlaylist);
-            _database.Users.Update(_selectedUser);
-            _database.Playlists.Update(newPlaylist);
+             var playlist = _database.Playlists.AddAsync(newPlaylist);
+            //_database.Users.Update(_selectedUser);
+            //_database.Playlists.Update(newPlaylist);
 
 
             //THIS DOESNT TRIGGER SO THE SELECTED USER HAS A NEW PLAYLIST. WHY WONT IT ADD?
@@ -67,7 +76,7 @@ namespace Project_EnterpriseSystem.Controllers
                 return BadRequest("DID NOT ADD");
 
             //await _database.SaveChangesAsync();
-            
+
             await _database.SaveChangesAsync();
             //_database.Users.Update(_selectedUser);
 
@@ -104,7 +113,7 @@ namespace Project_EnterpriseSystem.Controllers
          return setPlaylist;
         }
         public async Task<User> UserSet(string username){
-        var user = _database.Users.Include(x=>x.ListOfPlaylists).Where(x=>x.Username==username).FirstOrDefault();
+        var user = _database.Users.Where(x=>x.Username==username).Include(x=>x.ListOfPlaylists).FirstOrDefault();
             return user; //its ok if its default
         }
 
