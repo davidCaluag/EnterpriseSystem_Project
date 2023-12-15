@@ -15,7 +15,7 @@ namespace EnterpriseSystem_Project.Controllers
         private UserDatabase database = new();
 
         //get all songs
-        [HttpGet("/allSongs")]
+        [HttpGet("allsongs")]
         public async Task<IActionResult> GetAllSongs(){
             //if no songs are in the database throw an exception
             if (database.Songs.Count() == 0){
@@ -28,7 +28,7 @@ namespace EnterpriseSystem_Project.Controllers
 
 
         //get songs with a specific genre
-        [HttpGet("/allGenres/{genre}")]
+        [HttpGet("allgenres/{genre}")]
         public async Task<IActionResult> GetSongsByGenre(Genre genre){
 
             //scrape Songs in database where the Genre matches the argument given
