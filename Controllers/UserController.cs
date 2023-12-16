@@ -109,6 +109,7 @@ namespace Project_EnterpriseSystem.Controllers
             return Ok("Granted");
 
         }
+        
         [HttpDelete("deleteuser/{userName}/{password}/")]
         public async Task<IActionResult> DeleteUser(string userName, string password){
             

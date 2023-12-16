@@ -2,7 +2,7 @@ window.onload = function () {
     var selectObject = document.getElementById("SelectUser");
     var stat = document.getElementById("result");
     if (selectObject) {
-        fetch("http://localhost:5109/api/user/alluser/")
+        fetch("http://localhost:5109/api/user/alluser")
             .then(response => response.json())
             .then(data => populateSelectUser(data));
     
