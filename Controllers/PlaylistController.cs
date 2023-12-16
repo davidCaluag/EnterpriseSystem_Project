@@ -19,11 +19,19 @@ namespace Project_EnterpriseSystem.Controllers
         private UserDatabase _database = new ();
 
         
+        /*
+        public Guid Id { get; set; } = Guid.NewGuid();
 
-        [HttpGet("getplaylist/{username}")]
-        public async Task<IActionResult> GetAllPlaylist(string username){
+        public User? user {get; set;} = default;
+        public string Title { get; set; } = "";
+        public int SongCount {get; set; } = 0;
+        public List<Song> ListOfSongs {get; set; } = new();
+        public Genre PlaylistGenre {get; set; }
+        */
+        [HttpGet("getplaylist/{userName}")]
+        public async Task<IActionResult> GetAllPlaylist(string userName){
 
-            var _selectedUser = await UserSet(username);
+            User _selectedUser = await UserSet(userName);
 
 
             if(_selectedUser == default)
@@ -39,8 +47,25 @@ namespace Project_EnterpriseSystem.Controllers
             return Ok(list);
         }
 
-        [HttpPut("newplaylist/{playlistName}/{userName}")]
-        public async Task<IActionResult> AddPlaylist(string playlistName, string userName){
+        [HttpGet("getplaylistbyplaylistname/{playlistName}/{userName}")]
+
+        public async Task<IActionResult> GetSpecificPlaylistInfo(string playlistName, string userName){
+            User _selectedUser = await UserSet(userName);
+
+
+            if(_selectedUser == default)
+                return BadRequest("Set user first before making requests!");
+
+            var _playlist = _selectedUser.ListOfPlaylists.Where(x=>x.Title == playlistName).SingleOrDefault();
+
+            if(_playlist == default)
+                return BadRequest("Playlist name not found");
+
+            return Ok(_playlist);
+        }
+
+        [HttpPut("newplaylist/{playlistName}/{userName}/{playlistGenre}")]
+        public async Task<IActionResult> AddPlaylist(string playlistName, string userName, string playlistGenre){
         
             //User _selectedUser = await UserSet(userName);
 
@@ -61,6 +86,9 @@ namespace Project_EnterpriseSystem.Controllers
                 PlayListTitle = playlistName,
                 user = _selectedUser
             };
+
+            newPlaylist.PlaylistGenre.GenreName = playlistGenre;
+
             //THIS ISNT WORKING. NOT SURE WHY AND IM GETTING ABSOLUTELY LIVID LMAO
 
             // var _playlist = await __database.Users.Where(x=>x == _selectedUser).Include(x=>x.ListOfPlaylists).FirstAsync();

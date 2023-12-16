@@ -1,6 +1,6 @@
 window.onload = function () {
     var selectObject = document.getElementById("SelectUser");
-
+    var stat = document.getElementById("result");
     if (selectObject) {
         fetch("http://localhost:5109/api/user/alluser/")
             .then(response => response.json())
@@ -80,7 +80,6 @@ window.onload = function () {
         }
 
         function updateStatus(message) {
-            const stat = document.getElementById("result");
             stat.innerHTML = message;
             if(message !== "Status: OK");
             }
