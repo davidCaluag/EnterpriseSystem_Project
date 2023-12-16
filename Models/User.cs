@@ -45,6 +45,7 @@ namespace Project_EnterpriseSystem.Models
         public void AddPlaylist(Playlist newPlaylist){
             ListOfPlaylists.Add(newPlaylist);
         }
+
         public bool ValidatePassword(string pw){
             if(pw.Length < 6)
                 return false; //not long enough

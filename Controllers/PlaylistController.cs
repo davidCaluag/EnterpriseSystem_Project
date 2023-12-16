@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Pipelines;
 using System.Linq;
 using System.Threading.Tasks;
+using EnterpriseSystem_Project.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -64,8 +65,8 @@ namespace Project_EnterpriseSystem.Controllers
             return Ok(_playlist);
         }
 
-        [HttpPut("newplaylist/{playlistName}/{userName}/{playlistGenre}")]
-        public async Task<IActionResult> AddPlaylist(string playlistName, string userName, string playlistGenre){
+        [HttpPut("newplaylist/{playlistName}/{userName}/{genre}")]
+        public async Task<IActionResult> AddPlaylist(string playlistName, string userName, string genre){
         
             //User _selectedUser = await UserSet(userName);
 
@@ -80,14 +81,15 @@ namespace Project_EnterpriseSystem.Controllers
             if(_selectedUser.ListOfPlaylists.Any(x=>x.PlayListTitle == playlistName) != default)
                 return BadRequest("Already there");
 
-            int beforeAddingCount = _selectedUser.ListOfPlaylists.Count;
-
+            //int beforeAddingCount = _selectedUser.ListOfPlaylists.Count;
+            string _genre = genre==default?"Mixed":genre;
             Playlist newPlaylist = new(){
                 PlayListTitle = playlistName,
                 user = _selectedUser
             };
 
-            newPlaylist.PlaylistGenre.GenreName = playlistGenre;
+            newPlaylist.PlaylistGenre.GenreName = _genre;
+
 
             //THIS ISNT WORKING. NOT SURE WHY AND IM GETTING ABSOLUTELY LIVID LMAO
 
@@ -100,8 +102,6 @@ namespace Project_EnterpriseSystem.Controllers
 
 
             //THIS DOESNT TRIGGER SO THE SELECTED USER HAS A NEW PLAYLIST. WHY WONT IT ADD?
-            if(_selectedUser.ListOfPlaylists.Count == beforeAddingCount)
-                return BadRequest("DID NOT ADD");
 
             //await _database.SaveChangesAsync();
             
