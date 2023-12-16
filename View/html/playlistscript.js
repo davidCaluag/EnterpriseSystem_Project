@@ -52,25 +52,34 @@ window.onload = function(){
         //.then(response => alert(response));
     }
 
+/* THIS IS JUST COMPLETELY MESSY BUT IT WORKS! */
+
     function populateSelectPlaylist(data) {
-        var newNumber = 0;
+        //this is not necessary
+        //var newNumber = 0;
+
+        //for each playlist
         data.forEach(playlist => {
             
             const newOption = document.createElement("option");
             var newRow = playlistTable.insertRow();
             newOption.innerHTML = playlist.title;
+            
+            //newNumber++;
 
-            newNumber++;
+            //insert title cell
             var playlistTitleCell = newRow.insertCell(0);
             playlistTitleCell.innerHTML = "Title :"+playlist.title;
 
-
+            //insert row of id
             var playlistIdCell = newRow.insertCell(1);
             playlistIdCell.innerHTML = "Id :"+ playlist.id;
 
+            //song count cell
             var playlistSongCountCell = newRow.insertCell(2);
             playlistSongCountCell.innerHTML = "Song Count :"+ playlist.songCount;
-
+            
+            //genre cell
             var playlistGenreCell = newRow.insertCell(3);
             playlistGenreCell.innerHTML = "Genre :"+ playlist.playlistGenre.genreName;
             
@@ -81,9 +90,12 @@ window.onload = function(){
         });
     }
     
+    //unnecessary
     function updateSelect(data){
         data.forEach(playlist=>(iterateItem))
     }
+
+    //lowkey unnecessary
     function iterateItem(item, index, playlist) {
         if(index == selectIndex){
         //playlistId.innerHTML = "Id : "+ playlist[index].id;

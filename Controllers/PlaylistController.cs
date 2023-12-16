@@ -29,39 +29,44 @@ namespace Project_EnterpriseSystem.Controllers
         public List<Song> ListOfSongs {get; set; } = new();
         public Genre PlaylistGenre {get; set; }
         */
+
+        //GET SPECIFIC USER PLAYLIST
         [HttpGet("getplaylist/{userName}")]
         public async Task<IActionResult> GetAllPlaylist(string userName){
 
+            //finds user
             User _selectedUser = await UserSet(userName);
 
-
+            //if user doesnt exist, return bad request.
             if(_selectedUser == default)
                 return BadRequest("Set user first before making requests!");
             
             List<Playlist> returnList = new();
 
+            //list is the playlist list
             var list = _selectedUser.ListOfPlaylists.ToList().AsReadOnly();
             foreach(var i in list){
                 i.user = default;
             }
-       
+            //return list
             return Ok(list);
         }
 
         [HttpGet("getplaylistbyplaylistname/{playlistName}/{userName}")]
 
         public async Task<IActionResult> GetSpecificPlaylistInfo(string playlistName, string userName){
+            
             User _selectedUser = await UserSet(userName);
 
-
+            //checking for null/default
             if(_selectedUser == default)
                 return BadRequest("Set user first before making requests!");
-
+            //find specific playlist
             var _playlist = _selectedUser.ListOfPlaylists.Where(x=>x.Title == playlistName).SingleOrDefault();
 
             if(_playlist == default)
                 return BadRequest("Playlist name not found");
-
+            //return playlist
             return Ok(_playlist);
         }
 
@@ -69,7 +74,7 @@ namespace Project_EnterpriseSystem.Controllers
         public async Task<IActionResult> AddPlaylist(string playlistName, string userName, string genre){
         
             //User _selectedUser = await UserSet(userName);
-
+            //select user with playlist included
             var _selectedUser = await _database.Users
                                 .Where(x=>x.Username==userName)
                                 .Include(x=>x.ListOfPlaylists)
@@ -82,12 +87,17 @@ namespace Project_EnterpriseSystem.Controllers
                 return BadRequest("Already there");
 
             //int beforeAddingCount = _selectedUser.ListOfPlaylists.Count;
+            
+            //This doesn't work
             string _genre = genre==default?"Mixed":genre;
+
+            //Make new playlist
             Playlist newPlaylist = new(){
                 PlayListTitle = playlistName,
                 user = _selectedUser
             };
 
+            //This doesnt work
             newPlaylist.PlaylistGenre.GenreName = _genre;
 
 
@@ -105,6 +115,8 @@ namespace Project_EnterpriseSystem.Controllers
 
             //await _database.SaveChangesAsync();
             
+
+            //it works now!
             await _database.SaveChangesAsync();
             //_database.Users.Update(_selectedUser);
 
@@ -121,6 +133,8 @@ namespace Project_EnterpriseSystem.Controllers
             if(_selectedUser == default || _selectedUser == null)
                 throw new ArgumentNullException("User is null...");
             
+
+            //new playlist
             var _playlist = await PlaylistSet(playlistName,_selectedUser);
 
             //Cant find playlist
@@ -137,11 +151,16 @@ namespace Project_EnterpriseSystem.Controllers
 
             return Ok($"Deleted {playlistName}");
         }
+
         
+
+        //Get playlist
         public async Task<Playlist> PlaylistSet(string playlist, User user){
          var setPlaylist = user.ListOfPlaylists.Where(x=>x.PlayListTitle == playlist).FirstOrDefault();
          return setPlaylist;
         }
+
+        //Get user
         public async Task<User> UserSet(string username){
         var user = _database.Users.Where(x=>x.Username==username).Include(x=>x.ListOfPlaylists).FirstOrDefault();
             return user; //its ok if its default
